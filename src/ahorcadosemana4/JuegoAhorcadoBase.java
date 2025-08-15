@@ -22,10 +22,10 @@ public abstract class JuegoAhorcadoBase {
 
     }
 
-    public void actualizarPalabraActual(char letra) {}
+    public String actualizarPalabraActual(String palabraSecreta) {return palabraActual;}
     
-    public void verificarLetra(char letra) {}
+    public boolean verificarLetra() {return true;}
     
-    public void hasGanado(){}
+    public boolean hasGanado(){return true;}
 
 }
