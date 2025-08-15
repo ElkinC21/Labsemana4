@@ -1,17 +1,19 @@
 
 package ahorcadosemana4;
 
+import java.util.ArrayList;
 
 
 
-public class JuegoAhorcadoFijo   {   
 
-private int intentos=6;
-private String palabraactual;
-private String palabrasecreta;
+public class JuegoAhorcadoFijo extends JuegoAhorcadoBase   {   
 
-    public JuegoAhorcadoFijo(String palabra){
-this.palabrasecreta=palabra;
+    private ArrayList<String> palabrasSecretas=new ArrayList<>();
+
+
+
+    public JuegoAhorcadoFijo(){
+
 }
 public void actualizarImagen(){
 
@@ -19,14 +21,38 @@ public void actualizarImagen(){
 public int restarintentos(){
 return intentos-=1;
 }
-public void actualizarpalabra(char letra){
-palabraactual += letra;
+public String actualizarpalabraActual(char letra){
+palabraActual += letra;
+return palabraActual;
 }
-public void verificarLetra(char letra){
-    for (int i = 0; i < palabrasecreta.length(); i++) {
-     
+public boolean verificarLetra(char letra){
+    for (int i = 0; i < palabraSecreta.length(); i++) {
+     if(letra==palabraSecreta.charAt(i)){
+     return true;
+     }
      
      }
+    return false;
+}
+
+
+    public void agregarPalabrasSecretas(String palabra) {
+       palabrasSecretas.add(palabra);
+       
     }
+
+  
+    public String inicializarPalabraSecreta() {
+        
+    }
+
+    
+    public void jugar() {
+      
+    }
+
+    
+
+   
 }
 
