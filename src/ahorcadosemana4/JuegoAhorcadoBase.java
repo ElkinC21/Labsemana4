@@ -19,7 +19,8 @@ public abstract class JuegoAhorcadoBase implements JuegoAhorcado {
     public static ArrayList<String> figuraAhorcado = new ArrayList<>();
 
     public JuegoAhorcadoBase() {
-
+ this.intentos=0;
+ this.limiteIntentos=6;
     }
 
     public String actualizarPalabraActual(String palabraSecreta) {return palabraActual;}
