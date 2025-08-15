@@ -8,6 +8,8 @@ package ahorcadosemana4;
  *
  * @author saidn
  */
-public class JuegoAhorcadoAzar {
+public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
+    
+    
     
 }
