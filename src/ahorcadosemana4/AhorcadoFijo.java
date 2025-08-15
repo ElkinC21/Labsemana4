@@ -1,19 +1,21 @@
 package ahorcadosemana4;
 
+import javax.swing.SwingUtilities;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
+public class AhorcadoFijo extends JuegoAhorcadoBase {
 
     private String ultimaEntrada = null;
     private String ultimoMensaje = " ";
+    private final int indicePalabra;
 
-    /**
-     * MODIFICADO: Ahora lee las palabras desde la clase PalabrasFijas,
-     * igual que el modo de juego AhorcadoFijo.
-     */
+    public AhorcadoFijo(int indicePalabra) {
+        super();
+        this.indicePalabra = indicePalabra;
+    }
+
     @Override
     public ArrayList<String> getPalabrasSecretas() {
         return PalabrasFijas.leerPalabras();
@@ -21,19 +23,16 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
 
     @Override
     public String inicializarPalabraSecreta() {
-        ArrayList<String> posibles = getPalabrasSecretas();
-        if (posibles.isEmpty()) {
-            // Manejo de error si el archivo está vacío o no se puede leer
-            this.palabraSecreta = "error"; 
+        ArrayList<String> palabras = getPalabrasSecretas();
+        if (indicePalabra >= 0 && indicePalabra < palabras.size()) {
+            this.palabraSecreta = palabras.get(indicePalabra);
         } else {
-            Collections.shuffle(posibles);
-            this.palabraSecreta = posibles.get(0);
+            this.palabraSecreta = "defecto"; // Palabra de respaldo
         }
-        
         letrasUsadas.clear();
         limiteIntentos = 6;
         intentos = 0;
-        cargarFigurasAhorcado(); // Asegúrate de que las figuras se carguen
+        cargarFigurasAhorcado();
         this.palabraActual = actualizarPalabraActual(this.palabraSecreta);
         return this.palabraSecreta;
     }
@@ -103,9 +102,9 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         inicializarPalabraSecreta();
 
         BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        JuegoAzarFrame.bindInputQueue(queue);
+        AhorcadoFijoFrame.bindInputQueue(queue);
 
-        JuegoAzarFrame.updateView(figuraAhorcado.get(0),
+        AhorcadoFijoFrame.updateView(figuraAhorcado.get(0),
                 formatearConEspacios(palabraActual),
                 intentos, limiteIntentos, letrasUsadas,
                 "Introduce una letra o intenta la palabra completa");
@@ -123,27 +122,30 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
                 verificarLetra();
 
                 int etapa = Math.min(intentos, figuraAhorcado.size() - 1);
-                JuegoAzarFrame.updateView(
+                AhorcadoFijoFrame.updateView(
                         figuraAhorcado.get(etapa),
                         formatearConEspacios(palabraActual),
                         intentos, limiteIntentos, letrasUsadas,
                         ultimoMensaje
                 );
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException ignored) {
+            }
         }
 
         int etapa = Math.min(intentos, figuraAhorcado.size() - 1);
+        String mensajeFinal;
         if (hasGanado()) {
-            JuegoAzarFrame.updateView(figuraAhorcado.get(etapa),
-                    formatearConEspacios(palabraActual),
-                    intentos, limiteIntentos, letrasUsadas,
-                    "¡Has ganado! La palabra era: " + palabraSecreta);
-        } else if (abandonar || intentos >= limiteIntentos) {
-            JuegoAzarFrame.updateView(figuraAhorcado.get(etapa),
-                    formatearConEspacios(palabraActual),
-                    intentos, limiteIntentos, letrasUsadas,
-                    "Fin de la partida. La palabra era: " + palabraSecreta);
+            mensajeFinal = "¡Has ganado! La palabra era: " + palabraSecreta;
+        } else {
+            mensajeFinal = "Fin de la partida. La palabra era: " + palabraSecreta;
         }
+        
+        AhorcadoFijoFrame.updateView(figuraAhorcado.get(etapa),
+                formatearConEspacios(palabraActual),
+                intentos, limiteIntentos, letrasUsadas,
+                mensajeFinal);
+        
+        AhorcadoFijoFrame.juegoTerminado();
     }
 
     private void cargarFigurasAhorcado() {
@@ -315,4 +317,3 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         return s == null ? "" : s.replace("", " ").trim();
     }
 }
-

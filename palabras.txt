@@ -1,0 +1,10 @@
+ingeniero
+perro
+gato
+arbol
+playa
+montana
+rio
+libro
+juego
+codigo
