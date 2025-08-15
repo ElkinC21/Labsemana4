@@ -9,7 +9,7 @@ import java.util.Collections;
  *
  * @author saidn
  */
-public abstract class JuegoAhorcadoBase {
+public abstract class JuegoAhorcadoBase implements JuegoAhorcado {
 
     public String palabraSecreta;
     public String palabraActual;
